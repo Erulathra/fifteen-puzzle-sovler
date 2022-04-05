@@ -1,21 +1,39 @@
 from __future__ import annotations
 
 from enum import Enum
+
 import numpy as np
 
 BOARD_SIZE = 4
 
 
 class Node:
+    __create_key = object()
 
-    def __init__(self, board: np.ndarray, zero_position: np.ndarray, parent: Node, last_operator: Operator):
+    def __init__(self, create_key, board: np.ndarray, zero_position: np.ndarray, parent: Node, last_operator: Operator):
+        assert (create_key == Node.__create_key), \
+            "You should use get_node method"
         self.__board = board
         self.__zero_position = zero_position
         self.__parent = parent
         self.__last_operator = last_operator
 
+    @classmethod
+    def get_node(cls, board: np.ndarray):
+        return cls.get_node_advanced(board, None, None)
+
+    @classmethod
+    def get_node_advanced(cls, board: np.ndarray, parent: Node, last_operator: Operator):
+        zero_position = np.ravel(np.asarray(board == 0).nonzero())
+
+        # swap coordinates because np.array has (y, x) but we are using Mathematical coordinates
+        x, y = zero_position
+        zero_position = np.array([y, x])
+
+        return Node(cls.__create_key, board, zero_position, parent, last_operator)
+
     def copy(self) -> Node:
-        return Node(self.__board, self.__zero_position, self.__parent, self.last_operator)
+        return Node(self.__create_key, self.__board.copy(), self.__zero_position, self.__parent, self.last_operator)
 
     def apply_operator(self, operator: Operator) -> Node:
         new_zero_position = self.__zero_position + np.array(operator.value)
@@ -32,7 +50,16 @@ class Node:
         new_board[y1][x1], new_board[y2][x2] = new_board[y2][x2], new_board[y1][x1]
 
         # Create new node and return it
-        return Node(new_board, new_zero_position, self, operator)
+        return Node(self.__create_key, new_board, new_zero_position, self, operator)
+
+    def __eq__(self, other):
+        return isinstance(other, Node) and (self.board == other.__board).all() and (
+                self.__zero_position == other.__zero_position).all()
+
+    # Hash method
+    def __hash__(self):
+        self.__board.flags.writeable = False
+        return hash((self.__board.data.tobytes(), self.__zero_position.data.tobytes()))
 
     # Properties
     @property

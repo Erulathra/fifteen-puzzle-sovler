@@ -18,7 +18,13 @@ class TestNode(TestCase):
                                       [9, 10, 11, 0],
                                       [13, 14, 15, 12]])
 
-        self.test_Node = node.Node(self.test_board, np.array([3, 3]), None, None)
+        self.test_Node = node.Node.get_node(self.test_board)
+
+    def test_get_node(self):
+        test_node = node.Node.get_node(self.test_board)
+        np.testing.assert_array_equal(np.array([3, 3]), test_node.zero_position)
+        test_node = node.Node.get_node(self.test_board_L)
+        np.testing.assert_array_equal(np.array([2, 3]), test_node.zero_position)
 
     def test_apply_operator(self):
         child_node = self.test_Node.apply_operator(node.Operator.L)
@@ -38,3 +44,11 @@ class TestNode(TestCase):
 
         self.assertRaises(node.NewPositionIsOutOfBoardException, child_node.apply_operator, node.Operator.U)
         self.assertRaises(node.NewPositionIsOutOfBoardException, child_node.apply_operator, node.Operator.L)
+
+    def test_hash(self):
+        node_one = node.Node.get_node(self.test_board)
+        node_two = node.Node.get_node_advanced(self.test_board, node_one, node.Operator.U)
+        node_three = node.Node.get_node_advanced(self.test_board_L, node_one, node.Operator.L)
+
+        self.assertEqual(hash(node_one), hash(node_two))
+        self.assertNotEqual(hash(node_one), hash(node_three))
