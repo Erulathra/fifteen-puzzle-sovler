@@ -4,10 +4,11 @@ from enum import Enum
 
 import numpy as np
 
-BOARD_SIZE = 4
-
 
 class Node:
+
+    __BOARD_SIZE = 4
+    __VALID_BOARD = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]])
     __create_key = object()
 
     def __init__(self, create_key, board: np.ndarray, zero_position: np.ndarray, parent: Node, last_operator: Operator):
@@ -39,7 +40,7 @@ class Node:
         new_zero_position = self.__zero_position + np.array(operator.value)
 
         # Check is number out of board
-        if new_zero_position[0] >= BOARD_SIZE or new_zero_position[1] >= BOARD_SIZE \
+        if new_zero_position[0] >= self.__BOARD_SIZE or new_zero_position[1] >= self.__BOARD_SIZE \
                 or new_zero_position[0] < 0 or new_zero_position[1] < 0:
             raise NewPositionIsOutOfBoardException()
 
@@ -56,7 +57,9 @@ class Node:
         return isinstance(other, Node) and (self.board == other.__board).all() and (
                 self.__zero_position == other.__zero_position).all()
 
-    # Hash method
+    def is_goal(self) -> bool:
+        return (self.__board == self.__VALID_BOARD).all()
+
     def __hash__(self):
         self.__board.flags.writeable = False
         return hash((self.__board.data.tobytes(), self.__zero_position.data.tobytes()))
@@ -84,6 +87,17 @@ class Operator(Enum):
     R = [1, 0]
     U = [0, -1]
     D = [0, 1]
+
+    def __str__(self) -> str:
+        match self:
+            case Operator.L:
+                return "L"
+            case Operator.R:
+                return "R"
+            case Operator.U:
+                return "U"
+            case Operator.D:
+                return "D"
 
 
 class NewPositionIsOutOfBoardException(Exception):

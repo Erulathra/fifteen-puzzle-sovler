@@ -52,3 +52,12 @@ class TestNode(TestCase):
 
         self.assertEqual(hash(node_one), hash(node_two))
         self.assertNotEqual(hash(node_one), hash(node_three))
+
+    def test_is_goal(self):
+        self.assertTrue(self.test_Node.is_goal())
+
+    def test_operator_to_string(self):
+        self.assertEqual("L", str(node.Operator.L))
+        self.assertEqual("R", str(node.Operator.R))
+        self.assertEqual("U", str(node.Operator.U))
+        self.assertEqual("D", str(node.Operator.D))
