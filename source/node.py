@@ -6,7 +6,6 @@ import numpy as np
 
 
 class Node:
-
     __BOARD_SIZE = 4
     __VALID_BOARD = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]])
     __create_key = object()
@@ -60,7 +59,7 @@ class Node:
                 neighbours.append(self.apply_operator(operator))
             except NewPositionIsOutOfBoardException:
                 pass
-        return neighbours 
+        return neighbours
 
     def __eq__(self, other):
         return isinstance(other, Node) and (self.board == other.__board).all() and (
