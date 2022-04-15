@@ -56,6 +56,12 @@ class TestNode(TestCase):
     def test_is_goal(self):
         self.assertTrue(self.test_Node.is_goal())
 
+    def test_get_neighbours(self):
+        neighbours = self.test_Node.get_neighbours()
+        self.assertEqual(2, len(neighbours))
+        self.assertEqual(neighbours[0], self.test_Node.apply_operator(node.Operator.L))
+        self.assertEqual(neighbours[1], self.test_Node.apply_operator(node.Operator.U))
+
     def test_operator_to_string(self):
         self.assertEqual("L", str(node.Operator.L))
         self.assertEqual("R", str(node.Operator.R))

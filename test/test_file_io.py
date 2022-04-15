@@ -29,7 +29,7 @@ class Test(TestCase):
                     node.Operator.R]
         path = "test_files/4x4_07_00003_sol.txt"
 
-        file_io.result_to_file(path , solution)
+        file_io.result_to_file(path, solution)
         file = open(path, "r")
         lines = file.readlines()
         file.close()

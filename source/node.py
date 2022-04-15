@@ -53,6 +53,15 @@ class Node:
         # Create new node and return it
         return Node(self.__create_key, new_board, new_zero_position, self, operator)
 
+    def get_neighbours(self) -> [Node]:
+        neighbours = []
+        for operator in [Operator.L, Operator.R, Operator.U, Operator.D]:
+            try:
+                neighbours.append(self.apply_operator(operator))
+            except NewPositionIsOutOfBoardException:
+                pass
+        return neighbours 
+
     def __eq__(self, other):
         return isinstance(other, Node) and (self.board == other.__board).all() and (
                 self.__zero_position == other.__zero_position).all()
