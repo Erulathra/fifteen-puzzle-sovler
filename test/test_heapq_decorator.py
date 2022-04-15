@@ -31,8 +31,14 @@ class TestHeapqDecorator(TestCase):
     def test_priority(self):
         self.assertEqual(7, self.test_priority_queue.priority("surowka"))
         self.assertEqual(2, self.test_priority_queue.priority("salatka"))
+        self.assertRaises(hd.ObjectNotFoundException, self.test_priority_queue.priority, "makaron")
 
     def test_update(self):
-        self.assertNotEqual(4, self.test_priority_queue.priority("surowka"))
-        self.test_priority_queue.update(4, "surowka")
-        self.assertEqual(4, self.test_priority_queue.priority("surowka"))
+        self.assertNotEqual(0, self.test_priority_queue.priority("surowka"))
+        self.test_priority_queue.update(0, "surowka")
+        self.assertEqual(0, self.test_priority_queue.priority("surowka"))
+        self.assertEqual("surowka", self.test_priority_queue.pop())
+
+    def test__getitem__(self):
+        self.assertEqual(["surowka"], self.test_priority_queue[7])
+        self.assertEqual([], self.test_priority_queue[69])

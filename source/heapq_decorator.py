@@ -33,17 +33,17 @@ class HeapqDecorator:
             if ituple[1] == item:
                 return ituple[0]
 
-        raise
+        raise ObjectNotFoundException
 
     def update(self, priority, item) -> None:
-        for ituple in self.__queue:
-            if ituple[1] == item:
-                ituple[0] = priority
+        for i in range(len(self.__queue)):
+            if self.__queue[i][1] == item:
+                self.__queue[i] = (priority, item)
         heapq.heapify(self.__queue)
 
     def __len__(self) -> int:
         return len(self.__queue)
 
 
-class PriorityError(Exception):
+class ObjectNotFoundException(Exception):
     pass
