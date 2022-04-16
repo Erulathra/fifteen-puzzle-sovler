@@ -1,3 +1,5 @@
+import numpy as np
+
 from node import *
 import heapq_decorator as hd
 
@@ -33,4 +35,17 @@ def a_star_algorithm(start_node: Node, heuristic) -> Node:
 
 def hamming_heuristic(node: Node) -> int:
     valid_board = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]])
-    return np.count_nonzero(node.board == valid_board)
+    return 16 - np.count_nonzero(node.board == valid_board)
+
+
+def manhattan_heuristic(node: Node) -> int:
+    result = 0
+    board = node.board
+
+    for i in range(4):
+        for j in range(4):
+            # this complicated formula increases demanded number form 1 to 15, but the last number is 0
+            position = np.where(board == (i * 4 + j + 1) % 16)
+            result += np.absolute(position[0][0] - i) + np.absolute(position[1][0] - j)
+
+    return result
