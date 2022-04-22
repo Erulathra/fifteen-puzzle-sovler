@@ -4,16 +4,16 @@ import node
 
 
 def file_to_node(path: str) -> node.Node:
-    file = open(path, "r")
     board = []
 
-    for line in file.readlines():
+    with open(path, "r") as file:
+        lines = file.readlines()
+
+        board_width, board_height = lines[0].split(" ")
+
+    for line in lines[1:]:
         # string to int array
         numbers = [int(i) for i in line.split(" ")]
-
-        # skip row with board size
-        if len(numbers) < 4:
-            continue
 
         board.append(numbers)
 

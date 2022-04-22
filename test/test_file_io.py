@@ -13,10 +13,33 @@ class Test(TestCase):
                       [13, 14, 15, 12]])
     zero_position = np.array([2, 1])
 
+    board_3x3 = np.array([[1, 2, 3],
+                          [4, 6, 0],
+                          [7, 5, 8]])
+    zero_position_3x3 = np.array([2, 1])
+
+    board_2x3 = np.array([[1, 0, 3],
+                          [4, 2, 5]])
+    zero_position_2x3 = np.array([1, 0])
+
     def test_file_to_node(self):
         node = file_io.file_to_node("test_files/4x4_07_00003.txt")
         np.testing.assert_array_equal(self.board, node.board)
         np.testing.assert_array_equal(self.zero_position, node.zero_position)
+        self.assertEqual(None, node.parent)
+        self.assertEqual(None, node.last_operator)
+
+    def test_file_to_node_3x3(self):
+        node = file_io.file_to_node("test_files/3x3_03_00007.txt")
+        np.testing.assert_array_equal(self.board_3x3, node.board)
+        np.testing.assert_array_equal(self.zero_position_3x3, node.zero_position)
+        self.assertEqual(None, node.parent)
+        self.assertEqual(None, node.last_operator)
+
+    def test_file_to_node_2x3(self):
+        node = file_io.file_to_node("test_files/2x3_03_00007.txt")
+        np.testing.assert_array_equal(self.board_2x3, node.board)
+        np.testing.assert_array_equal(self.zero_position_2x3, node.zero_position)
         self.assertEqual(None, node.parent)
         self.assertEqual(None, node.last_operator)
 
