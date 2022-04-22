@@ -6,14 +6,14 @@ import numpy as np
 
 
 class Node:
-    __BOARD_SIZE = 4
-    __VALID_BOARD = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]])
     __create_key = object()
 
     def __init__(self, create_key, board: np.ndarray, zero_position: np.ndarray, parent: Node, last_operator: Operator):
         assert (create_key == Node.__create_key), \
             "You should use get_node method"
         self.__board = board
+        self.__board_width = board.shape[1]
+        self.__board_height = board.shape[0]
         self.__zero_position = zero_position
         self.__parent = parent
         self.__last_operator = last_operator
@@ -39,7 +39,7 @@ class Node:
         new_zero_position = self.__zero_position + np.array(operator.value)
 
         # Check is number out of board
-        if new_zero_position[0] >= self.__BOARD_SIZE or new_zero_position[1] >= self.__BOARD_SIZE \
+        if new_zero_position[0] >= self.__board_height or new_zero_position[1] >= self.__board_width \
                 or new_zero_position[0] < 0 or new_zero_position[1] < 0:
             raise NewPositionIsOutOfBoardException()
 
@@ -66,7 +66,13 @@ class Node:
                 self.__zero_position == other.__zero_position).all()
 
     def is_goal(self) -> bool:
-        return (self.__board == self.__VALID_BOARD).all()
+        for i in range(self.__board_height):
+            for j in range(self.__board_width):
+                number = (j + i * self.__board_width + 1) % (self.__board_width * self.__board_height)
+                if number != self.__board[i][j]:
+                    return False
+
+        return True
 
     def __hash__(self):
         self.__board.flags.writeable = False
