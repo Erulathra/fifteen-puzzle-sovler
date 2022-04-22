@@ -78,6 +78,12 @@ class Node:
         self.__board.flags.writeable = False
         return hash((self.__board.data.tobytes(), self.__zero_position.data.tobytes()))
 
+    def __lt__(self, other):
+        return False
+
+    def __le__(self, other):
+        return False
+
     # Properties
     @property
     def board(self):

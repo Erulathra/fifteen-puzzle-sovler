@@ -13,18 +13,17 @@ def a_star_algorithm(start_node: Node, heuristic) -> Node:
         return start_node
     # crate priority queue and and first node
     priority_queue = hd.HeapqDecorator()
+    priority_queue.push(0, start_node)
     open_set = set()
 
     while len(priority_queue) != 0:
-        current_node: Node = priority_queue.pop()
+        current_priority, current_node = priority_queue.pop()
         if current_node.is_goal():
             return current_node
 
-        open_set.add(current_node)
-
         for neighbour in current_node.get_neighbours():
             if not (neighbour in open_set):
-                neighbour_priority = priority_queue.priority(current_node) + heuristic(neighbour)
+                neighbour_priority = current_priority + heuristic(neighbour)
                 if not priority_queue.contains(neighbour):
                     priority_queue.push(neighbour_priority, neighbour)
                 elif priority_queue.priority(neighbour) > neighbour_priority:

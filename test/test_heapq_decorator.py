@@ -20,9 +20,9 @@ class TestHeapqDecorator(TestCase):
         new_priority_queue.push(3, "ziemniaki")
         self.assertEqual(3, len(new_priority_queue))
 
-        self.assertEqual("buraczki", new_priority_queue.pop())
-        self.assertEqual("ziemniaki", new_priority_queue.pop())
-        self.assertEqual("kotlety", new_priority_queue.pop())
+        self.assertEqual((2, "buraczki"), new_priority_queue.pop())
+        self.assertEqual((3, "ziemniaki"), new_priority_queue.pop())
+        self.assertEqual((5, "kotlety"), new_priority_queue.pop())
 
     def test_contains(self):
         self.assertEqual(True, self.test_priority_queue.contains("kotlety"))
@@ -37,7 +37,7 @@ class TestHeapqDecorator(TestCase):
         self.assertNotEqual(0, self.test_priority_queue.priority("surowka"))
         self.test_priority_queue.update(0, "surowka")
         self.assertEqual(0, self.test_priority_queue.priority("surowka"))
-        self.assertEqual("surowka", self.test_priority_queue.pop())
+        self.assertEqual((0, "surowka"), self.test_priority_queue.pop())
 
     def test__getitem__(self):
         self.assertEqual(["surowka"], self.test_priority_queue[7])
