@@ -74,6 +74,15 @@ class Node:
 
         return True
 
+    @property
+    def path(self) -> str:
+        node = self
+        result = ""
+        while node.parent is not None:
+            result += str(node.last_operator)
+            node = node.parent
+        return result[::-1]
+
     def __hash__(self):
         self.__board.flags.writeable = False
         return hash((self.__board.data.tobytes(), self.__zero_position.data.tobytes()))

@@ -67,3 +67,13 @@ class TestNode(TestCase):
         self.assertEqual("R", str(node.Operator.R))
         self.assertEqual("U", str(node.Operator.U))
         self.assertEqual("D", str(node.Operator.D))
+
+    def test_path(self):
+        self.test_Node = self.test_Node.apply_operator(node.Operator.U)
+        self.test_Node = self.test_Node.apply_operator(node.Operator.U)
+        self.test_Node = self.test_Node.apply_operator(node.Operator.L)
+        self.test_Node = self.test_Node.apply_operator(node.Operator.L)
+        self.test_Node = self.test_Node.apply_operator(node.Operator.D)
+        self.test_Node = self.test_Node.apply_operator(node.Operator.D)
+
+        self.assertEqual("UULLDD", self.test_Node.path)
