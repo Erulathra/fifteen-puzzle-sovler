@@ -48,4 +48,9 @@ class SearchStatistics(ISearchStatistics):
         self.__runtime_start = time.perf_counter() * 1000
 
     def end_runtime_measure(self):
-        self.__runtime_end = time.perf_counter() * 1000
+        end = time.perf_counter() * 1000
+
+        if self.__runtime_start > end:
+            return
+
+        self.__runtime_end = end
