@@ -1,6 +1,7 @@
 import numpy as np
 
 import node
+from ISearchStatistics import ISearchStatistics
 
 
 def file_to_node(path: str) -> node.Node:
@@ -23,15 +24,10 @@ def file_to_node(path: str) -> node.Node:
     return node.Node.get_node(board)
 
 
-def result_to_file(path: str, solution: [node.Operator]) -> None:
+def result_to_file(path: str, solution_node: node.Node) -> None:
     with open(path, "w+") as file:
-        solution_string = ""
-
-        for operator in solution:
-            solution_string += str(operator)
-
-        file.write(str(len(solution)) + '\n')
-        file.write(solution_string)
+        file.write(str(len(solution_node.path)) + '\n')
+        file.write(solution_node.path)
 
 
 def error_to_file(path: str):
@@ -39,14 +35,10 @@ def error_to_file(path: str):
         file.write(str(-1))
 
 
-def stats_to_file(path: str, solution_length: int,
-                  number_of_visited_states: int,
-                  number_of_processed_states: int,
-                  recursion_depth: int,
-                  runtime_duration: float):
+def stats_to_file(path: str, search_statistics: ISearchStatistics):
     with open(path, "w+") as file:
-        file.write(str(solution_length) + '\n')
-        file.write(str(number_of_visited_states) + '\n')
-        file.write(str(number_of_processed_states) + '\n')
-        file.write(str(recursion_depth) + '\n')
-        file.write(str(round(runtime_duration, 3)))
+        file.write(str(search_statistics.solution_length) + '\n')
+        file.write(str(search_statistics.visited_states_count) + '\n')
+        file.write(str(search_statistics.processed_states_count) + '\n')
+        file.write(str(search_statistics.max_recursion_depth) + '\n')
+        file.write(str(round(search_statistics.run_time, 3)))

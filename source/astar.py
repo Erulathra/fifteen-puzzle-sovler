@@ -29,7 +29,7 @@ def a_star_algorithm(start_node: Node,
         search_statistics.change_max_recursion_depth(len(current_node.path))
         if current_node.is_goal():
             # finish algorithm
-            search_statistics.end_runtime_measure()
+            search_statistics.stop_runtime_measure()
             search_statistics.calculate_solution_length(current_node.path)
             return current_node
 

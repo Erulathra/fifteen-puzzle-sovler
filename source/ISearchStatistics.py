@@ -48,7 +48,7 @@ class ISearchStatistics(ABC):
         pass
 
     @abstractmethod
-    def end_runtime_measure(self):
+    def stop_runtime_measure(self):
         pass
 
 
@@ -88,5 +88,5 @@ class NoneSearchStatistics(ISearchStatistics):
     def start_runtime_measure(self):
         pass
 
-    def end_runtime_measure(self):
+    def stop_runtime_measure(self):
         pass

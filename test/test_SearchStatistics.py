@@ -35,5 +35,5 @@ class TestSearchStatistics(TestCase):
     def test_run_time(self):
         self.search_statistics.start_runtime_measure()
         time.sleep(0.025)
-        self.search_statistics.end_runtime_measure()
+        self.search_statistics.stop_runtime_measure()
         self.assertGreaterEqual(self.search_statistics.run_time, 24)
