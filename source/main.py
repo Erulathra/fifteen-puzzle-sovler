@@ -1,4 +1,5 @@
 import sys
+from rich import print
 
 import astar
 import file_io as fio
@@ -7,20 +8,32 @@ from SearchStatistics import SearchStatistics
 
 def main():
     strategy_parameter = None
+    algorithm = None
     start_node_file_path = sys.argv[3]
     solution_file_path = sys.argv[4]
     statistics_file_path = sys.argv[5]
 
     match sys.argv[1]:
         case "bfs":
-            print(f"run bfs with {sys.argv[2]}")
+            print(f"run bfs with {sys.argv[2:]}")
+            return
         case "dfs":
-            print(f"run dfs with {sys.argv[2]}")
+            print(f"run dfs with {sys.argv[2:]}")
+            return
         case "astr":
-            if sys.argv[2] == "mann":
+            print(f"run astr with {sys.argv[2:]}")
+            if sys.argv[2] == "manh":
                 strategy_parameter = astar.manhattan_heuristic
             elif sys.argv[2] == "hamm":
                 strategy_parameter = astar.hamming_heuristic
+
+            algorithm = astar.a_star_algorithm
+
+    run_algorithm(algorithm,
+                  strategy_parameter,
+                  start_node_file_path,
+                  solution_file_path,
+                  statistics_file_path)
 
 
 def run_algorithm(strategy,
