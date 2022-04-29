@@ -5,7 +5,7 @@ from ISearchStatistics import ISearchStatistics
 
 class SearchStatistics(ISearchStatistics):
     def __init__(self):
-        self.__solution_length: int = 0
+        self.__solution_length: int = -1
         self.__visited_states_count: int = 0
         self.__processed_states_count: int = 0
         self.__max_recursion_depth: int = 0
@@ -35,11 +35,11 @@ class SearchStatistics(ISearchStatistics):
     def calculate_solution_length(self, solution: str):
         self.__solution_length = len(solution)
 
-    def increase_visited_states_count(self):
-        self.__visited_states_count += 1
+    def increase_visited_states_count(self, how_much: int):
+        self.__visited_states_count += how_much
 
-    def increase_processed_states_count(self):
-        self.__processed_states_count += 1
+    def increase_processed_states_count(self, how_much: int):
+        self.__processed_states_count += how_much
 
     def change_max_recursion_depth(self, new_max_depht: int):
         self.__max_recursion_depth = max([new_max_depht, self.__max_recursion_depth])
