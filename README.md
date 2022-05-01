@@ -4,9 +4,9 @@ There will be 4 algorithms that can solve 15 puzzle.
 ### Used algorithms:
 - [ ] breadth first search (WIP)
 - [ ] deep first search (WIP)
-- [ ] A-Star 
-    - [ ] Hamming (WIP)
-    - [ ] Manhattan (WIP)
+- [x] A-Star 
+    - [x] Hamming
+    - [x] Manhattan
 
 All algorithms were written in Python :snake:
 
