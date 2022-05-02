@@ -47,7 +47,8 @@ class TestNode(TestCase):
 
     def test_hash(self):
         node_one = node.Node.get_node(self.test_board)
-        node_two = node.Node.get_node_advanced(self.test_board, node_one, node.Operator.U)
+        node_two = node_one.apply_operator(node.Operator.L)
+        node_two = node_two.apply_operator(node.Operator.R)
         node_three = node.Node.get_node_advanced(self.test_board_L, node_one, node.Operator.L)
 
         self.assertEqual(hash(node_one), hash(node_two))
