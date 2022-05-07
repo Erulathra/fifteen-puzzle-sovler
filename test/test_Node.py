@@ -63,6 +63,15 @@ class TestNode(TestCase):
         self.assertEqual(neighbours[0], self.test_Node.apply_operator(node.Operator.L))
         self.assertEqual(neighbours[1], self.test_Node.apply_operator(node.Operator.U))
 
+        test_node = self.test_Node.apply_operator(node.Operator.L)
+        test_node = test_node.apply_operator(node.Operator.U)
+        neighbours = test_node.get_neighbours("UDLR")
+
+        self.assertEqual(neighbours[0], test_node.apply_operator(node.Operator.U))
+        self.assertEqual(neighbours[1], test_node.apply_operator(node.Operator.D))
+        self.assertEqual(neighbours[2], test_node.apply_operator(node.Operator.L))
+        self.assertEqual(neighbours[3], test_node.apply_operator(node.Operator.R))
+
     def test_operator_to_string(self):
         self.assertEqual("L", str(node.Operator.L))
         self.assertEqual("R", str(node.Operator.R))

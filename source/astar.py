@@ -10,9 +10,6 @@ def a_star(heuristic: str, start_node_path: str, solution_path: str, statistics_
 def a_star_algorithm(start_node: Node,
                      heuristic,
                      search_statistics: ISearchStatistics = NoneSearchStatistics()) -> Node:
-    # prepare statistics object
-    search_statistics.increase_processed_states_count(1)
-    search_statistics.increase_visited_states_count(1)
     search_statistics.start_runtime_measure()
 
     if start_node.is_goal():
@@ -20,6 +17,7 @@ def a_star_algorithm(start_node: Node,
     # crate priority queue and and first node
     priority_queue = hd.HeapqDecorator()
     priority_queue.push(0, start_node)
+    search_statistics.increase_visited_states_count(1)
     closed_set = set()
 
     while len(priority_queue) != 0:

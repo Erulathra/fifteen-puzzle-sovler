@@ -52,9 +52,10 @@ class Node:
         # Create new node and return it
         return Node(self.__create_key, new_board, new_zero_position, self, operator)
 
-    def get_neighbours(self) -> [Node]:
+    def get_neighbours(self, order: str = "LRUD") -> [Node]:
         neighbours = []
-        for operator in [Operator.L, Operator.R, Operator.U, Operator.D]:
+        operators = [Operator.from_string(letter) for letter in order]
+        for operator in operators:
             try:
                 neighbours.append(self.apply_operator(operator))
             except NewPositionIsOutOfBoardException:
@@ -128,6 +129,17 @@ class Operator(Enum):
             case Operator.D:
                 return "D"
 
+    @classmethod
+    def from_string(cls, operator: str) -> Operator:
+        match operator:
+            case "L":
+                return Operator.L
+            case "R":
+                return Operator.R
+            case "U":
+                return Operator.U
+            case "D":
+                return Operator.D
 
 class NewPositionIsOutOfBoardException(Exception):
     pass

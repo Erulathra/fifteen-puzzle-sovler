@@ -5,22 +5,34 @@ from node import *
 
 
 def dfs_algorithm(start_node: Node,
+                  order: str = "LURD",
                   search_statistics: ISearchStatistics = NoneSearchStatistics()) -> Node:
+    search_statistics.start_runtime_measure()
+
     if start_node.is_goal():
         return start_node
     # crate stack queue and and first node
-    stack = deque()
+    stack: deque[Node] = deque()
     stack.append(start_node)
-    closed_set = set()
+    search_statistics.increase_visited_states_count(1)
+    closed_set: set[Node] = set()
 
     while len(stack):
         current_node = stack.popleft()
+        if len(current_node.path) > 20:
+            continue
+        search_statistics.change_max_recursion_depth(len(current_node.path))
+
         if current_node not in closed_set:
             closed_set.add(current_node)
-            for neighbour in current_node.get_neighbours():
+            search_statistics.increase_processed_states_count(1)
+            for neighbour in current_node.get_neighbours(order):
                 if neighbour.is_goal():
                     # finish algorithm
+                    search_statistics.stop_runtime_measure()
+                    search_statistics.calculate_solution_length(current_node.path)
                     return neighbour
                 stack.append(neighbour)
+                search_statistics.increase_visited_states_count(1)
 
     return None
