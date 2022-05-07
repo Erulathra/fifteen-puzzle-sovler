@@ -21,14 +21,8 @@ def bfs_algorithm(start_node: Node,
                 # finish algorithm
                 return neighbour
             # check if neighbour is in open_set based on field values
-            if not is_in_stack(neighbour, open_set):
+            if neighbour not in open_set:
                 open_set.add(neighbour)
                 stack_queue.append(neighbour)
 
     return None
-
-
-def is_in_stack(element, stack_queue):
-    if element in stack_queue:
-        return True
-    return False

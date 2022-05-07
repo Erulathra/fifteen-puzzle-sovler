@@ -10,7 +10,6 @@ def a_star(heuristic: str, start_node_path: str, solution_path: str, statistics_
 def a_star_algorithm(start_node: Node,
                      heuristic,
                      search_statistics: ISearchStatistics = NoneSearchStatistics()) -> Node:
-
     # prepare statistics object
     search_statistics.increase_processed_states_count(1)
     search_statistics.increase_visited_states_count(1)
@@ -21,11 +20,10 @@ def a_star_algorithm(start_node: Node,
     # crate priority queue and and first node
     priority_queue = hd.HeapqDecorator()
     priority_queue.push(0, start_node)
-    open_set = set()
+    closed_set = set()
 
     while len(priority_queue) != 0:
         current_priority, current_node = priority_queue.pop()
-        search_statistics.increase_processed_states_count(1)
         search_statistics.change_max_recursion_depth(len(current_node.path))
         if current_node.is_goal():
             # finish algorithm
@@ -33,13 +31,14 @@ def a_star_algorithm(start_node: Node,
             search_statistics.calculate_solution_length(current_node.path)
             return current_node
 
-        open_set.add(current_node)
+        closed_set.add(current_node)
+        search_statistics.increase_processed_states_count(1)
         for neighbour in current_node.get_neighbours():
-            if not (neighbour in open_set):
+            if not (neighbour in closed_set):
                 neighbour_priority = current_priority + heuristic(neighbour)
-                search_statistics.increase_visited_states_count(1)
                 if not priority_queue.contains(neighbour):
                     priority_queue.push(neighbour_priority, neighbour)
+                    search_statistics.increase_visited_states_count(1)
                 elif priority_queue.priority(neighbour) > neighbour_priority:
                     priority_queue.update(neighbour_priority, neighbour)
 

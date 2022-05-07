@@ -9,26 +9,18 @@ def dfs_algorithm(start_node: Node,
     if start_node.is_goal():
         return start_node
     # crate stack queue and and first node
-    stack_queue = deque()
-    stack_queue.append(start_node)
-    open_set = set()
+    stack = deque()
+    stack.append(start_node)
+    closed_set = set()
 
-    while len(stack_queue) != 0:
-        # todo: wybadać czemu dodawane są duplikaty
-        current_node = stack_queue.popleft()
-        if not is_in_stack(current_node, open_set):
-            open_set.add(current_node)
+    while len(stack):
+        current_node = stack.popleft()
+        if current_node not in closed_set:
+            closed_set.add(current_node)
             for neighbour in current_node.get_neighbours():
                 if neighbour.is_goal():
                     # finish algorithm
                     return neighbour
-                if not is_in_stack(neighbour, stack_queue):
-                    stack_queue.append(neighbour)
+                stack.append(neighbour)
 
     return None
-
-
-def is_in_stack(element, stack_queue):
-    if element in stack_queue:
-        return True
-    return False
