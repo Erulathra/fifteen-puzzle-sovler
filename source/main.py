@@ -18,12 +18,11 @@ def main():
     match sys.argv[1]:
         case "bfs":
             print(f"run bfs with {sys.argv[2:]}")
-            algorithm = dfs.dfs_algorithm
+            algorithm = bfs.bfs_algorithm
             strategy_parameter = sys.argv[2]
-            return
         case "dfs":
             print(f"run dfs with {sys.argv[2:]}")
-            algorithm = bfs.bfs_algorithm
+            algorithm = dfs.dfs_algorithm
             strategy_parameter = sys.argv[2]
         case "astr":
             print(f"run astr with {sys.argv[2:]}")
