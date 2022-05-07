@@ -12,14 +12,14 @@ def dfs_algorithm(start_node: Node,
     if start_node.is_goal():
         return start_node
     # crate stack queue and and first node
-    stack: deque[Node] = deque()
+    stack: list[Node] = list()
     stack.append(start_node)
     search_statistics.increase_visited_states_count(1)
     closed_set: set[Node] = set()
 
     while len(stack):
-        current_node = stack.popleft()
-        if len(current_node.path) > 20:
+        current_node = stack.pop()
+        if len(current_node.path) > 25:
             continue
 
         if current_node not in closed_set:

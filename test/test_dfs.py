@@ -16,24 +16,16 @@ class algorithm_test(TestCase):
     ])
     test_nodes.append(Node.get_node(test_board_0))
 
-    test_board_1 = np.array([
-        [0, 1, 9, 8],
-        [10, 7, 14, 15],
-        [5, 12, 3, 13],
-        [4, 11, 6, 2]
-    ])
-    test_nodes.append(Node.get_node(test_board_1))
-
     test_board_2 = np.array([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 0, 14, 15]
+        [1, 0, 3, 4],
+        [5, 2, 7, 8],
+        [10, 6, 11, 12],
+        [9, 13, 14, 15]
     ])
     test_nodes.append(Node.get_node(test_board_2))
 
     def test_dfs_algorithm(self):
-        for test_node in [self.test_nodes[0]]:
+        for test_node in [self.test_nodes[1]]:
             try:
                 result = dfs.dfs_algorithm(test_node)
             except:
