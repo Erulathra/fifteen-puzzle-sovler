@@ -21,16 +21,16 @@ def dfs_algorithm(start_node: Node,
         current_node = stack.popleft()
         if len(current_node.path) > 20:
             continue
-        search_statistics.change_max_recursion_depth(len(current_node.path))
 
         if current_node not in closed_set:
             closed_set.add(current_node)
             search_statistics.increase_processed_states_count(1)
             for neighbour in current_node.get_neighbours(order):
+                search_statistics.change_max_recursion_depth(len(neighbour.path))
                 if neighbour.is_goal():
                     # finish algorithm
                     search_statistics.stop_runtime_measure()
-                    search_statistics.calculate_solution_length(current_node.path)
+                    search_statistics.calculate_solution_length(neighbour.path)
                     return neighbour
                 stack.append(neighbour)
                 search_statistics.increase_visited_states_count(1)

@@ -17,15 +17,15 @@ def main():
 
     match sys.argv[1]:
         case "bfs":
-            print(f"run bfs with {sys.argv[2:]}")
+            # print(f"run bfs with {sys.argv[2:]}")
             algorithm = bfs.bfs_algorithm
             strategy_parameter = sys.argv[2]
         case "dfs":
-            print(f"run dfs with {sys.argv[2:]}")
+            # print(f"run dfs with {sys.argv[2:]}")
             algorithm = dfs.dfs_algorithm
             strategy_parameter = sys.argv[2]
         case "astr":
-            print(f"run astr with {sys.argv[2:]}")
+            # print(f"run astr with {sys.argv[2:]}")
             if sys.argv[2] == "manh":
                 strategy_parameter = astar.manhattan_heuristic
             elif sys.argv[2] == "hamm":

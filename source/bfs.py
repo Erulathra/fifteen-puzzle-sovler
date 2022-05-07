@@ -21,12 +21,12 @@ def bfs_algorithm(start_node: Node,
 
     while len(stack):
         current_node = stack.popleft()
-        search_statistics.change_max_recursion_depth(len(current_node.path))
         for neighbour in current_node.get_neighbours(order):
+            search_statistics.change_max_recursion_depth(len(neighbour.path))
             if neighbour.is_goal():
                 # finish algorithm
                 search_statistics.stop_runtime_measure()
-                search_statistics.calculate_solution_length(current_node.path)
+                search_statistics.calculate_solution_length(neighbour.path)
                 return neighbour
             # check if neighbour is in closed_set based on field values
             if neighbour not in closed_set:
