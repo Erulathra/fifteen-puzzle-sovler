@@ -19,7 +19,7 @@ def dfs_algorithm(start_node: Node,
 
     while len(stack):
         current_node = stack.pop()
-        if len(current_node.path) > 25:
+        if len(current_node.path) > 20:
             continue
 
         if current_node not in closed_set:

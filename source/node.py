@@ -57,7 +57,9 @@ class Node:
         operators = [Operator.from_string(letter) for letter in order]
         for operator in operators:
             try:
-                neighbours.append(self.apply_operator(operator))
+                if self.last_operator is None or operator.value[0] + self.last_operator.value[0] != 0\
+                        or operator.value[1] + self.last_operator.value[1] != 0:
+                    neighbours.append(self.apply_operator(operator))
             except NewPositionIsOutOfBoardException:
                 pass
         return neighbours
