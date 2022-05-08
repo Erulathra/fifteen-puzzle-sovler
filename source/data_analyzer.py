@@ -9,10 +9,9 @@ from matplotlib import pyplot
 
 def main():
     pyplot.rcParams["figure.figsize"] = (8, 5)
-    data_dict = extract_data_to_dict()
-    general_data = extract_general_data_to_dict()
 
     plot_general_data()
+    plot_bfs_and_dfs_data()
 
 
 def plot_general_data():
@@ -33,7 +32,7 @@ def plot_general_data():
     # solution len
     for i, parameter in enumerate(["Średnia długość rozwiązania", "Średnia ilość stanów odwiedzonych",
                                    "Średnia ilość stanów przetoworzonych", "Średnia maksymalna głębokość rekursji",
-                                   "Średni czas działania algorytmu"]):
+                                   "Średni czas działania algorytmu [ms]"]):
         for j, (algorithm, name) in enumerate([(bfs, "BFS"), (dfs, "DFS"), (astr, "A*")]):
             datax = []
             datay = []
@@ -42,15 +41,44 @@ def plot_general_data():
                 datay.append(mean(k[i + 3]))
 
             pos = (0.9 / 3) * j - 0.15
-            pyplot.bar(np.array(datax) - pos, datay, label=name, width=0.3, align="edge")
+            pyplot.bar(np.array(datax) + pos, datay, label=name, width=0.3, align="edge")
 
-        if i in [1,2,4]:
+        if i in [1, 2, 4]:
             pyplot.yscale('log')
 
         pyplot.legend()
         pyplot.xlabel("Głębokość rozwiązania")
         pyplot.ylabel(parameter)
         pyplot.show()
+
+
+def plot_bfs_and_dfs_data():
+    general_data = extract_data_to_dict()
+
+    orders = ["RDUL", "RDLU", "DRUL", "DRLU", "LUDR", "LURD", "ULDR", "ULRD"]
+
+    for alg in ['bfs', 'dfs']:
+        # solution len
+        for i, parameter in enumerate(["Średnia długość rozwiązania", "Średnia ilość stanów odwiedzonych",
+                                       "Średnia ilość stanów przetoworzonych", "Średnia maksymalna głębokość rekursji",
+                                       "Średni czas działania algorytmu [ms]"]):
+            for j, order in enumerate(orders):
+                data_x = []
+                data_y = []
+                for k in range(1, 8):
+                    data_x.append(k)
+                    data_y.append(mean(general_data[alg + order.lower() + str(k)][i+3]))
+
+                pos = (0.8 / 8) * j - 0.4
+                pyplot.bar(np.array(data_x) + pos, data_y, label=order, width=0.1, align="edge")
+
+            if i in [1, 2, 4]:
+                 pyplot.yscale('log')
+            if i == 0:
+                pyplot.legend()
+            pyplot.xlabel("Głębokość rozwiązania")
+            pyplot.ylabel(parameter)
+            pyplot.show()
 
 
 def extract_data_to_dict():
