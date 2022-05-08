@@ -12,6 +12,7 @@ def main():
 
     plot_general_data()
     plot_bfs_and_dfs_data()
+    plot_astr_data()
 
 
 def plot_general_data():
@@ -67,18 +68,45 @@ def plot_bfs_and_dfs_data():
                 data_y = []
                 for k in range(1, 8):
                     data_x.append(k)
-                    data_y.append(mean(general_data[alg + order.lower() + str(k)][i+3]))
+                    data_y.append(mean(general_data[alg + order.lower() + str(k)][i + 3]))
 
                 pos = (0.8 / 8) * j - 0.4
                 pyplot.bar(np.array(data_x) + pos, data_y, label=order, width=0.1, align="edge")
 
             if i in [1, 2, 4]:
-                 pyplot.yscale('log')
+                pyplot.yscale('log')
             if i == 0:
                 pyplot.legend()
             pyplot.xlabel("Głębokość rozwiązania")
             pyplot.ylabel(parameter)
             pyplot.show()
+
+
+def plot_astr_data():
+    general_data = extract_data_to_dict()
+
+    heuristics = ["hamm", "manh"]
+
+    for i, parameter in enumerate(["Średnia długość rozwiązania", "Średnia ilość stanów odwiedzonych",
+                                   "Średnia ilość stanów przetoworzonych", "Średnia maksymalna głębokość rekursji",
+                                   "Średni czas działania algorytmu [ms]"]):
+        for j, order in enumerate(heuristics):
+            data_x = []
+            data_y = []
+            for k in range(1, 8):
+                data_x.append(k)
+                data_y.append(mean(general_data["astr" + order.lower() + str(k)][i + 3]))
+
+            pos = (0.8 / 2) * j - 0.4
+            pyplot.bar(np.array(data_x) + pos, data_y, label=order, width=0.4, align="edge")
+
+        # if i in [1, 2, 4]:
+        #     pyplot.yscale('log')
+        if i == 0:
+            pyplot.legend()
+        pyplot.xlabel("Głębokość rozwiązania")
+        pyplot.ylabel(parameter)
+        pyplot.show()
 
 
 def extract_data_to_dict():
