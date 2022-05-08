@@ -18,6 +18,11 @@ class Node:
         self.__parent = parent
         self.__last_operator = last_operator
 
+        if parent is not None:
+            self.__depth = parent.depth + 1
+        else:
+            self.__depth = 0
+
     @classmethod
     def get_node(cls, board: np.ndarray):
         return cls.get_node_advanced(board, None, None)
@@ -57,7 +62,7 @@ class Node:
         operators = [Operator.from_string(letter) for letter in order]
         for operator in operators:
             try:
-                if self.last_operator is None or operator.value[0] + self.last_operator.value[0] != 0\
+                if self.last_operator is None or operator.value[0] + self.last_operator.value[0] != 0 \
                         or operator.value[1] + self.last_operator.value[1] != 0:
                     neighbours.append(self.apply_operator(operator))
             except NewPositionIsOutOfBoardException:
@@ -65,8 +70,7 @@ class Node:
         return neighbours
 
     def __eq__(self, other):
-        return isinstance(other, Node) and (self.board == other.__board).all() and (
-                self.__zero_position == other.__zero_position).all()
+        return isinstance(other, Node) and (self.board == other.__board).all()
 
     def is_goal(self) -> bool:
         for i in range(self.__board_height):
@@ -86,9 +90,13 @@ class Node:
             node = node.parent
         return result[::-1]
 
+    @property
+    def depth(self) -> int:
+        return self.__depth
+
     def __hash__(self):
         self.__board.flags.writeable = False
-        return hash((self.__board.data.tobytes(), self.__zero_position.data.tobytes()))
+        return hash((self.__board.data.tobytes()))
 
     def __lt__(self, other):
         return False
@@ -121,27 +129,26 @@ class Operator(Enum):
     D = [0, 1]
 
     def __str__(self) -> str:
-        match self:
-            case Operator.L:
-                return "L"
-            case Operator.R:
-                return "R"
-            case Operator.U:
-                return "U"
-            case Operator.D:
-                return "D"
+        if self is Operator.L:
+            return "L"
+        if self is Operator.R:
+            return "R"
+        if self is Operator.U:
+            return "U"
+        if self is Operator.D:
+            return "D"
 
     @classmethod
     def from_string(cls, operator: str) -> Operator:
-        match operator:
-            case "L":
-                return Operator.L
-            case "R":
-                return Operator.R
-            case "U":
-                return Operator.U
-            case "D":
-                return Operator.D
+        if operator == "L":
+            return Operator.L
+        if operator == "R":
+            return Operator.R
+        if operator == "U":
+            return Operator.U
+        if operator == "D":
+            return Operator.D
+
 
 class NewPositionIsOutOfBoardException(Exception):
     pass

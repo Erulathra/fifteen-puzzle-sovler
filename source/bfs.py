@@ -22,7 +22,7 @@ def bfs_algorithm(start_node: Node,
     while len(stack):
         current_node = stack.popleft()
         for neighbour in current_node.get_neighbours(order):
-            search_statistics.change_max_recursion_depth(len(neighbour.path))
+            search_statistics.change_max_recursion_depth(neighbour.depth)
             if neighbour.is_goal():
                 # finish algorithm
                 search_statistics.stop_runtime_measure()

@@ -42,7 +42,7 @@ class SearchStatistics(ISearchStatistics):
         self.__processed_states_count += how_much
 
     def change_max_recursion_depth(self, new_max_depht: int):
-        self.__max_recursion_depth = max([new_max_depht, self.__max_recursion_depth])
+        self.__max_recursion_depth = max(new_max_depht, self.__max_recursion_depth)
 
     def start_runtime_measure(self):
         self.__runtime_start = time.perf_counter() * 1000

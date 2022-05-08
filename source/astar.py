@@ -31,7 +31,7 @@ def a_star_algorithm(start_node: Node,
         closed_set.add(current_node)
         search_statistics.increase_processed_states_count(1)
         for neighbour in current_node.get_neighbours():
-            search_statistics.change_max_recursion_depth(len(neighbour.path))
+            search_statistics.change_max_recursion_depth(neighbour.depth)
             if not (neighbour in closed_set):
                 neighbour_priority = current_priority + heuristic(neighbour)
                 if not priority_queue.contains(neighbour):

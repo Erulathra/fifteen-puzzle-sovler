@@ -1,6 +1,4 @@
 import sys
-from rich import print
-
 import astar
 import bfs
 import dfs
@@ -15,23 +13,22 @@ def main():
     solution_file_path = sys.argv[4]
     statistics_file_path = sys.argv[5]
 
-    match sys.argv[1]:
-        case "bfs":
-            # print(f"run bfs with {sys.argv[2:]}")
-            algorithm = bfs.bfs_algorithm
-            strategy_parameter = sys.argv[2]
-        case "dfs":
-            # print(f"run dfs with {sys.argv[2:]}")
-            algorithm = dfs.dfs_algorithm
-            strategy_parameter = sys.argv[2]
-        case "astr":
-            # print(f"run astr with {sys.argv[2:]}")
-            if sys.argv[2] == "manh":
-                strategy_parameter = astar.manhattan_heuristic
-            elif sys.argv[2] == "hamm":
-                strategy_parameter = astar.hamming_heuristic
+    if sys.argv[1] == "bfs":
+        # print(f"run bfs with {sys.argv[2:]}")
+        algorithm = bfs.bfs_algorithm
+        strategy_parameter = sys.argv[2]
+    elif sys.argv[1] == "dfs":
+        # print(f"run dfs with {sys.argv[2:]}")
+        algorithm = dfs.dfs_algorithm
+        strategy_parameter = sys.argv[2]
+    elif sys.argv[1] == "astr":
+        # print(f"run astr with {sys.argv[2:]}")
+        if sys.argv[2] == "manh":
+            strategy_parameter = astar.manhattan_heuristic
+        elif sys.argv[2] == "hamm":
+            strategy_parameter = astar.hamming_heuristic
 
-            algorithm = astar.a_star_algorithm
+        algorithm = astar.a_star_algorithm
 
     run_algorithm(algorithm,
                   strategy_parameter,

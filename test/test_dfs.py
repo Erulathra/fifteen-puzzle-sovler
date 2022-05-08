@@ -25,10 +25,10 @@ class algorithm_test(TestCase):
     test_nodes.append(Node.get_node(test_board_1))
 
     test_board_2 = np.array([
-        [1, 0, 3, 4],
-        [5, 2, 7, 8],
-        [10, 6, 11, 12],
-        [9, 13, 14, 15]
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 0, 10, 12],
+        [13, 14, 11, 15]
     ])
     test_nodes.append(Node.get_node(test_board_2))
 
@@ -51,7 +51,7 @@ class algorithm_test(TestCase):
     def test_dfs_algorithm(self):
         for test_node in self.test_nodes:
             try:
-                result = dfs.dfs_algorithm(test_node)
+                result = dfs.dfs_algorithm(test_node, "DRUL")
                 self.assertTrue(result.is_goal())
             except:
                 print(test_node.board)
