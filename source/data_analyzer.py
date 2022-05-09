@@ -75,7 +75,7 @@ def plot_bfs_and_dfs_data():
 
             if i in [1, 2, 4]:
                 pyplot.yscale('log')
-            if i == 0:
+            if i == 0 and alg == 'bfs':
                 pyplot.legend()
             pyplot.xlabel("Głębokość rozwiązania")
             pyplot.ylabel(parameter)
@@ -139,7 +139,8 @@ def extract_general_data_to_dict():
 
 
 def line_to_data(data, line):
-    data[3].append(int(line[4]))
+    if int(line[4]) > 0:
+        data[3].append(int(line[4]))
     data[4].append(int(line[5]))
     data[5].append(int(line[6]))
     data[6].append(int(line[7]))
