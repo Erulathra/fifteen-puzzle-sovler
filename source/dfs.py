@@ -28,8 +28,7 @@ def dfs_algorithm(start_node: Node,
             return current_node
 
         if current_node in closed_set:
-            if not update_closed_set(current_node, closed_set):
-                continue
+            continue
 
         if current_node.depth > 20:
             continue
@@ -43,10 +42,3 @@ def dfs_algorithm(start_node: Node,
 
     return None
 
-
-def update_closed_set(node, nodes_set):
-    try:
-        nodes_set.remove(node)
-        return True
-    except Exception:
-        return False

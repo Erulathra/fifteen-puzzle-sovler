@@ -41,7 +41,7 @@ def plot_general_data():
                 datax.append(k[2])
                 datay.append(mean(k[i + 3]))
 
-            pos = (0.9 / 3) * j - 0.15
+            pos = (0.9 / 3) * j - 0.45
             pyplot.bar(np.array(datax) + pos, datay, label=name, width=0.3, align="edge")
 
         if i in [1, 2, 4]:

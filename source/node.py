@@ -11,17 +11,17 @@ class Node:
     def __init__(self, create_key, board: np.ndarray, zero_position: np.ndarray, parent: Node, last_operator: Operator):
         assert (create_key == Node.__create_key), \
             "You should use get_node method"
-        self.__board = board
-        self.__board_width = board.shape[1]
-        self.__board_height = board.shape[0]
-        self.__zero_position = zero_position
-        self.__parent = parent
-        self.__last_operator = last_operator
+        self._board = board
+        self._board_width = board.shape[1]
+        self._board_height = board.shape[0]
+        self._zero_position = zero_position
+        self._parent = parent
+        self._last_operator = last_operator
 
         if parent is not None:
-            self.__depth = parent.depth + 1
+            self._depth = parent.depth + 1
         else:
-            self.__depth = 0
+            self._depth = 0
 
     @classmethod
     def get_node(cls, board: np.ndarray):
@@ -38,19 +38,19 @@ class Node:
         return Node(cls.__create_key, board, zero_position, parent, last_operator)
 
     def copy(self) -> Node:
-        return Node(self.__create_key, self.__board.copy(), self.__zero_position, self.__parent, self.last_operator)
+        return Node(self.__create_key, self._board.copy(), self._zero_position, self._parent, self.last_operator)
 
     def apply_operator(self, operator: Operator) -> Node:
-        new_zero_position = self.__zero_position + np.array(operator.value)
+        new_zero_position = self._zero_position + np.array(operator.value)
 
         # Check is number out of board
-        if new_zero_position[0] >= self.__board_height or new_zero_position[1] >= self.__board_width \
+        if new_zero_position[0] >= self._board_height or new_zero_position[1] >= self._board_width \
                 or new_zero_position[0] < 0 or new_zero_position[1] < 0:
             raise NewPositionIsOutOfBoardException()
 
         # swap zero with another number
-        new_board = self.__board.copy()
-        x1, y1 = self.__zero_position
+        new_board = self._board.copy()
+        x1, y1 = self._zero_position
         x2, y2 = new_zero_position
         new_board[y1][x1], new_board[y2][x2] = new_board[y2][x2], new_board[y1][x1]
 
@@ -70,13 +70,13 @@ class Node:
         return neighbours
 
     def __eq__(self, other):
-        return isinstance(other, Node) and (self.board == other.__board).all()
+        return isinstance(other, Node) and (self.board == other._board).all()
 
     def is_goal(self) -> bool:
-        for i in range(self.__board_height):
-            for j in range(self.__board_width):
-                number = (j + i * self.__board_width + 1) % (self.__board_width * self.__board_height)
-                if number != self.__board[i][j]:
+        for i in range(self._board_height):
+            for j in range(self._board_width):
+                number = (j + i * self._board_width + 1) % (self._board_width * self._board_height)
+                if number != self._board[i][j]:
                     return False
 
         return True
@@ -92,11 +92,11 @@ class Node:
 
     @property
     def depth(self) -> int:
-        return self.__depth
+        return self._depth
 
     def __hash__(self):
-        self.__board.flags.writeable = False
-        return hash((self.__board.data.tobytes()))
+        self._board.flags.writeable = False
+        return hash((self._board.data.tobytes()))
 
     def __lt__(self, other):
         return False
@@ -107,19 +107,19 @@ class Node:
     # Properties
     @property
     def board(self):
-        return self.__board
+        return self._board
 
     @property
     def zero_position(self):
-        return self.__zero_position
+        return self._zero_position
 
     @property
     def parent(self):
-        return self.__parent
+        return self._parent
 
     @property
     def last_operator(self):
-        return self.__last_operator
+        return self._last_operator
 
 
 class Operator(Enum):
