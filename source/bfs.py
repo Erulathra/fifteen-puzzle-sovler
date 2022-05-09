@@ -36,4 +36,5 @@ def bfs_algorithm(start_node: Node,
                 open_deque.append(neighbour)
                 search_statistics.increase_visited_states_count(1)
 
+    search_statistics.stop_runtime_measure()
     return None

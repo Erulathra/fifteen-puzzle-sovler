@@ -40,22 +40,22 @@ def a_star_algorithm(start_node: Node,
                 elif priority_queue.priority(neighbour) > neighbour_priority:
                     priority_queue.update(neighbour_priority, neighbour)
 
+    search_statistics.stop_runtime_measure()
     return None
 
 
 def hamming_heuristic(node: Node) -> int:
-    valid_board = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]])
-    return 16 - np.count_nonzero(node.board == valid_board)
+    return 16 - np.count_nonzero(node.board == node.valid_board)
 
 
 def manhattan_heuristic(node: Node) -> int:
     result = 0
     board = node.board
+    valid_board = node.valid_board
 
-    for i in range(4):
-        for j in range(4):
-            # this complicated formula increases demanded number form 1 to 15, but the last number is 0
-            position = np.where(board == (i * 4 + j + 1) % 16)
+    for i in range(valid_board.shape[0]):
+        for j in range(valid_board.shape[1]):
+            position = np.where(board == valid_board[i][j])
             result += np.absolute(position[0][0] - i) + np.absolute(position[1][0] - j)
 
     return result

@@ -73,13 +73,17 @@ class Node:
         return isinstance(other, Node) and (self.board == other._board).all()
 
     def is_goal(self) -> bool:
+        return (self._board == self.valid_board).all()
+
+    @property
+    def valid_board(self):
+        result = np.zeros((self._board_width, self._board_height))
         for i in range(self._board_height):
             for j in range(self._board_width):
                 number = (j + i * self._board_width + 1) % (self._board_width * self._board_height)
-                if number != self._board[i][j]:
-                    return False
+                result[i][j] = number
 
-        return True
+        return result
 
     @property
     def path(self) -> str:
