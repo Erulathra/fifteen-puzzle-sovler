@@ -45,15 +45,6 @@ class TestNode(TestCase):
         self.assertRaises(node.NewPositionIsOutOfBoardException, child_node.apply_operator, "U")
         self.assertRaises(node.NewPositionIsOutOfBoardException, child_node.apply_operator, "L")
 
-    def test_hash(self):
-        node_one = node.Node.get_node(self.test_board)
-        node_two = node_one.apply_operator("L")
-        node_two = node_two.apply_operator("R")
-        node_three = node.Node.get_node_advanced(self.test_board_L, node_one, "L")
-
-        self.assertEqual(hash(node_one), hash(node_two))
-        self.assertNotEqual(hash(node_one), hash(node_three))
-
     def test_is_goal(self):
         self.assertTrue(self.test_Node.is_goal())
 
@@ -68,8 +59,9 @@ class TestNode(TestCase):
         neighbours = test_node.get_neighbours("UDLR")
 
         self.assertEqual(neighbours[0], test_node.apply_operator("U"))
-        self.assertEqual(neighbours[1], test_node.apply_operator("L"))
-        self.assertEqual(neighbours[2], test_node.apply_operator("R"))
+        self.assertEqual(neighbours[1], test_node.apply_operator("D"))
+        self.assertEqual(neighbours[2], test_node.apply_operator("L"))
+        self.assertEqual(neighbours[3], test_node.apply_operator("R"))
 
     def test_operator_to_string(self):
         self.assertEqual("L", str("L"))

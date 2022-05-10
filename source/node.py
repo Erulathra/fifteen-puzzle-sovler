@@ -63,21 +63,28 @@ class Node:
         # Create new node and return it
         return Node(self.__create_key, new_board, new_zero_position, self, operator)
 
-    def get_neighbours(self, order: str = "LRUD") -> list[Node]:
+    def get_neighbours(self, order: str = None) -> list[Node]:
+        if order is None:
+            order = "LRUD"
+
         neighbours = []
+        order = self.remove_prohibited_operators(order)
+
         for operator in order:
-            try:
-                operator_value = Node._operator_dict[operator]
-                if self.last_operator is not None:
-                    last_operator_value = Node._operator_dict[self.last_operator]
-                else:
-                    last_operator_value = np.array([0, 0])
-                if None or operator_value[0] + last_operator_value[0] != 0 \
-                        or operator_value[1] + last_operator_value[1] != 0:
-                    neighbours.append(self.apply_operator(operator))
-            except NewPositionIsOutOfBoardException:
-                pass
+            neighbours.append(self.apply_operator(operator))
+
         return neighbours
+
+    def remove_prohibited_operators(self, order: str) -> str:
+        if self.zero_position[1] == 0:
+            order = order.replace('U', '')
+        elif self.zero_position[1] >= self._board_height - 1:
+            order = order.replace('D', '')
+        if self.zero_position[0] == 0:
+            order = order.replace('L', '')
+        elif self.zero_position[0] >= self._board_width - 1:
+            order = order.replace('R', '')
+        return order
 
     def __eq__(self, other):
         return (self.board == other._board).all()
@@ -114,7 +121,7 @@ class Node:
         return self._depth
 
     def __hash__(self):
-        return hash(self._board.tobytes())
+        return hash(self._board.tobytes()) + hash(self.depth) + hash(self.last_operator)
 
     def __lt__(self, other):
         return False

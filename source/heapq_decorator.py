@@ -30,14 +30,14 @@ class HeapqDecorator:
 
     def priority(self, item) -> int:
         for ituple in self.__queue:
-            if hash(ituple[1]) == hash(item):
+            if ituple[1] == item:
                 return ituple[0]
 
         raise ObjectNotFoundException
 
     def update(self, priority, item) -> None:
         for i in range(len(self.__queue)):
-            if hash(self.__queue[i][1]) == hash(item):
+            if self.__queue[i][1] == item:
                 self.__queue[i] = (priority, item)
         heapq.heapify(self.__queue)
 
