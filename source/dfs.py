@@ -1,5 +1,3 @@
-from collections import deque
-
 from ISearchStatistics import ISearchStatistics, NoneSearchStatistics
 from node import Node
 
@@ -10,7 +8,9 @@ def dfs_algorithm(start_node: Node,
     search_statistics.start_runtime_measure()
 
     if start_node.is_goal():
+        search_statistics.stop_runtime_measure()
         return start_node
+
     # crate stack queue and and first node
     open_stack: list[Node] = [start_node]
     closed_set: set[Node] = set()
@@ -20,22 +20,22 @@ def dfs_algorithm(start_node: Node,
     while open_stack:
         current_node = open_stack.pop()
 
-        if current_node in closed_set or current_node.depth > 25:
-            continue
+        if current_node not in closed_set and current_node.depth < 25:
 
-        closed_set.add(current_node)
-        search_statistics.increase_processed_states_count(1)
+            closed_set.add(current_node)
+            search_statistics.increase_processed_states_count(1)
+            search_statistics.change_max_recursion_depth(current_node.depth)
 
-        for neighbour in reversed(current_node.get_neighbours(order)):
-            if current_node.is_goal():
-                # finish algorithm
-                search_statistics.stop_runtime_measure()
-                search_statistics.calculate_solution_length(current_node.path)
-                return current_node
+            for neighbour in reversed(current_node.get_neighbours(order)):
 
-            open_stack.append(neighbour)
-            search_statistics.increase_visited_states_count(1)
-            search_statistics.change_max_recursion_depth(neighbour.depth)
+                if neighbour.is_goal():
+                    # finish algorithm
+                    search_statistics.stop_runtime_measure()
+                    search_statistics.calculate_solution_length(current_node.path)
+                    return neighbour
+            
+                open_stack.append(neighbour)
+                search_statistics.increase_visited_states_count(1)
 
     search_statistics.stop_runtime_measure()
     return None

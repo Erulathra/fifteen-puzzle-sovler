@@ -25,12 +25,12 @@ class Test(TestCase):
     zero_position_2x3 = np.array([1, 0])
 
     solution_node = node.Node.get_node(board_3x3)
-    solution_node = solution_node.apply_operator(node.Operator.L)
-    solution_node = solution_node.apply_operator(node.Operator.L)
-    solution_node = solution_node.apply_operator(node.Operator.D)
-    solution_node = solution_node.apply_operator(node.Operator.R)
-    solution_node = solution_node.apply_operator(node.Operator.R)
-    solution_node = solution_node.apply_operator(node.Operator.U)
+    solution_node = solution_node.apply_operator("L")
+    solution_node = solution_node.apply_operator("L")
+    solution_node = solution_node.apply_operator("D")
+    solution_node = solution_node.apply_operator("R")
+    solution_node = solution_node.apply_operator("R")
+    solution_node = solution_node.apply_operator("U")
 
     solution = "LLDRRU"
 

@@ -24,13 +24,13 @@ class algorithm_test(TestCase):
     ])
     test_nodes.append(Node.get_node(test_board_1))
 
-    test_board_2 = np.array([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 0, 10, 12],
-        [13, 14, 11, 15]
-    ])
-    test_nodes.append(Node.get_node(test_board_2))
+    # test_board_2 = np.array([
+    #     [1, 2, 3, 4],
+    #     [5, 6, 7, 8],
+    #     [9, 0, 10, 12],
+    #     [13, 14, 11, 15]
+    # ])
+    # test_nodes.append(Node.get_node(test_board_2))
 
     test_board_3 = np.array([
         [1, 2, 0, 4],

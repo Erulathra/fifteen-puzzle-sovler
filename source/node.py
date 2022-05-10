@@ -7,11 +7,17 @@ import numpy as np
 
 class Node:
     __create_key = object()
+    _operator_dict = {"L": np.array([-1, 0]),
+                      "R": np.array([1, 0]),
+                      "U": np.array([0, -1]),
+                      "D": np.array([0, 1])}
+    _target_board = None
 
-    def __init__(self, create_key, board: np.ndarray, zero_position: np.ndarray, parent: Node, last_operator: Operator):
+    def __init__(self, create_key, board: np.ndarray, zero_position: np.ndarray, parent: Node, last_operator: str):
         assert (create_key == Node.__create_key), \
             "You should use get_node method"
         self._board = board
+        self._board.flags.writeable = False
         self._board_width = board.shape[1]
         self._board_height = board.shape[0]
         self._zero_position = zero_position
@@ -28,7 +34,7 @@ class Node:
         return cls.get_node_advanced(board, None, None)
 
     @classmethod
-    def get_node_advanced(cls, board: np.ndarray, parent: Node, last_operator: Operator):
+    def get_node_advanced(cls, board: np.ndarray, parent: Node, last_operator: str):
         zero_position = np.ravel(np.asarray(board == 0).nonzero())
 
         # swap coordinates because np.array has (y, x) but we are using Mathematical coordinates
@@ -40,8 +46,8 @@ class Node:
     def copy(self) -> Node:
         return Node(self.__create_key, self._board.copy(), self._zero_position, self._parent, self.last_operator)
 
-    def apply_operator(self, operator: Operator) -> Node:
-        new_zero_position = self._zero_position + np.array(operator.value)
+    def apply_operator(self, operator: str) -> Node:
+        new_zero_position = self._zero_position + Node._operator_dict[operator]
 
         # Check is number out of board
         if new_zero_position[0] >= self._board_height or new_zero_position[1] >= self._board_width \
@@ -57,26 +63,35 @@ class Node:
         # Create new node and return it
         return Node(self.__create_key, new_board, new_zero_position, self, operator)
 
-    def get_neighbours(self, order: str = "LRUD") -> [Node]:
+    def get_neighbours(self, order: str = "LRUD") -> list[Node]:
         neighbours = []
-        operators = [Operator.from_string(letter) for letter in order]
-        for operator in operators:
+        for operator in order:
             try:
-                if self.last_operator is None or operator.value[0] + self.last_operator.value[0] != 0 \
-                        or operator.value[1] + self.last_operator.value[1] != 0:
+                operator_value = Node._operator_dict[operator]
+                if self.last_operator is not None:
+                    last_operator_value = Node._operator_dict[self.last_operator]
+                else:
+                    last_operator_value = np.array([0, 0])
+                if None or operator_value[0] + last_operator_value[0] != 0 \
+                        or operator_value[1] + last_operator_value[1] != 0:
                     neighbours.append(self.apply_operator(operator))
             except NewPositionIsOutOfBoardException:
                 pass
         return neighbours
 
     def __eq__(self, other):
-        return isinstance(other, Node) and (self.board == other._board).all()
+        return (self.board == other._board).all()
 
     def is_goal(self) -> bool:
-        return (self._board == self.valid_board).all()
+        return (self._board == self.target_board).all()
 
     @property
-    def valid_board(self):
+    def target_board(self):
+        if Node._target_board is None or self._target_board.shape != Node._target_board.shape:
+            Node._target_board = self._create_target_board()
+        return Node._target_board
+
+    def _create_target_board(self):
         result = np.zeros((self._board_width, self._board_height))
         for i in range(self._board_height):
             for j in range(self._board_width):
@@ -90,7 +105,7 @@ class Node:
         node = self
         result = ""
         while node.parent is not None:
-            result += str(node.last_operator)
+            result += node.last_operator
             node = node.parent
         return result[::-1]
 
@@ -99,8 +114,7 @@ class Node:
         return self._depth
 
     def __hash__(self):
-        self._board.flags.writeable = False
-        return hash((self._board.data.tobytes()))
+        return hash(self._board.tobytes())
 
     def __lt__(self, other):
         return False
@@ -124,34 +138,6 @@ class Node:
     @property
     def last_operator(self):
         return self._last_operator
-
-
-class Operator(Enum):
-    L = [-1, 0]
-    R = [1, 0]
-    U = [0, -1]
-    D = [0, 1]
-
-    def __str__(self) -> str:
-        if self is Operator.L:
-            return "L"
-        if self is Operator.R:
-            return "R"
-        if self is Operator.U:
-            return "U"
-        if self is Operator.D:
-            return "D"
-
-    @classmethod
-    def from_string(cls, operator: str) -> Operator:
-        if operator == "L":
-            return Operator.L
-        if operator == "R":
-            return Operator.R
-        if operator == "U":
-            return Operator.U
-        if operator == "D":
-            return Operator.D
 
 
 class NewPositionIsOutOfBoardException(Exception):

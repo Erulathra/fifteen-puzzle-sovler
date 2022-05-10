@@ -45,17 +45,17 @@ def a_star_algorithm(start_node: Node,
 
 
 def hamming_heuristic(node: Node) -> int:
-    return 16 - np.count_nonzero(node.board == node.valid_board)
+    return 16 - np.count_nonzero(node.board == node.target_board)
 
 
 def manhattan_heuristic(node: Node) -> int:
     result = 0
     board = node.board
-    valid_board = node.valid_board
+    target_board = node.target_board
 
-    for i in range(valid_board.shape[0]):
-        for j in range(valid_board.shape[1]):
-            position = np.where(board == valid_board[i][j])
+    for i in range(target_board.shape[0]):
+        for j in range(target_board.shape[1]):
+            position = np.where(board == target_board[i][j])
             result += np.absolute(position[0][0] - i) + np.absolute(position[1][0] - j)
 
     return result
