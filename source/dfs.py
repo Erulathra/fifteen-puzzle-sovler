@@ -16,7 +16,6 @@ def dfs_algorithm(start_node: Node,
     open_stack = [start_node]
     closed_set = set()
 
-
     search_statistics.increase_visited_states_count(1)
 
     while open_stack:
