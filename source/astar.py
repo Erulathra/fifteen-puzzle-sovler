@@ -1,4 +1,4 @@
-import heapq_decorator as hd
+from queue import PriorityQueue
 from ISearchStatistics import ISearchStatistics, NoneSearchStatistics
 from node import *
 
@@ -15,13 +15,21 @@ def a_star_algorithm(start_node: Node,
     if start_node.is_goal():
         return start_node
     # crate priority queue and and first node
-    priority_queue = hd.HeapqDecorator()
-    priority_queue.push(0, start_node)
+    open_priority_queue = PriorityQueue()
+    open_priority_queue.put((0, 0, start_node))
     search_statistics.increase_visited_states_count(1)
+
     closed_set = set()
 
-    while len(priority_queue) != 0:
-        current_priority, current_node = priority_queue.pop()
+    visited_id = 0
+
+    while not open_priority_queue.empty():
+        current_priority, node_id, current_node = open_priority_queue.get()
+
+        if current_node in closed_set:
+            continue
+
+        search_statistics.change_max_recursion_depth(current_node.depth)
         if current_node.is_goal():
             # finish algorithm
             search_statistics.stop_runtime_measure()
@@ -30,15 +38,15 @@ def a_star_algorithm(start_node: Node,
 
         closed_set.add(current_node)
         search_statistics.increase_processed_states_count(1)
+
         for neighbour in current_node.get_neighbours():
-            search_statistics.change_max_recursion_depth(neighbour.depth)
-            if not (neighbour in closed_set):
-                neighbour_priority = current_priority + heuristic(neighbour)
-                if not priority_queue.contains(neighbour):
-                    priority_queue.push(neighbour_priority, neighbour)
-                    search_statistics.increase_visited_states_count(1)
-                elif priority_queue.priority(neighbour) > neighbour_priority:
-                    priority_queue.update(neighbour_priority, neighbour)
+            if neighbour in closed_set:
+                continue
+
+            neighbour_priority = current_priority + heuristic(neighbour)
+            open_priority_queue.put((neighbour_priority, visited_id, neighbour))
+            search_statistics.increase_visited_states_count(1)
+            visited_id += 1
 
     search_statistics.stop_runtime_measure()
     return None

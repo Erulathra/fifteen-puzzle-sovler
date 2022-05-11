@@ -10,8 +10,8 @@ from matplotlib import pyplot
 def main():
     pyplot.rcParams["figure.figsize"] = (8, 5)
 
-    plot_general_data()
-    plot_bfs_and_dfs_data()
+    # plot_general_data()
+    # plot_bfs_and_dfs_data()
     plot_astr_data()
 
 
@@ -100,8 +100,6 @@ def plot_astr_data():
             pos = (0.8 / 2) * j - 0.4
             pyplot.bar(np.array(data_x) + pos, data_y, label=order, width=0.4, align="edge")
 
-        # if i in [1, 2, 4]:
-        #     pyplot.yscale('log')
         if i == 0:
             pyplot.legend()
         pyplot.xlabel("Głębokość rozwiązania")

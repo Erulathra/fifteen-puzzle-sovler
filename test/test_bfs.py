@@ -17,19 +17,36 @@ class algorithm_test(TestCase):
     test_nodes.append(Node.get_node(test_board_0))
 
     test_board_1 = np.array([
-        [0, 1, 9, 8],
-        [10, 7, 14, 15],
-        [5, 12, 3, 13],
-        [4, 11, 6, 2]
+        [1, 2, 3, 4],
+        [0, 5, 7, 8],
+        [9, 6, 10, 11],
+        [13, 14, 15, 12]
     ])
     test_nodes.append(Node.get_node(test_board_1))
 
     test_board_2 = np.array([
         [1, 2, 3, 4],
         [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 0, 14, 15]
+        [9, 0, 10, 12],
+        [13, 14, 11, 15]
     ])
+    test_nodes.append(Node.get_node(test_board_2))
+
+    test_board_3 = np.array([
+        [1, 2, 0, 4],
+        [5, 6, 3, 8],
+        [9, 10, 7, 11],
+        [13, 14, 15, 12]
+    ])
+    test_nodes.append(Node.get_node(test_board_3))
+
+    test_board_4 = np.array([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [0, 9, 10, 11],
+        [13, 14, 15, 12]
+    ])
+    test_nodes.append(Node.get_node(test_board_4))
     test_nodes.append(Node.get_node(test_board_2))
 
     def test_bfs_algorithm(self):
