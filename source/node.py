@@ -121,7 +121,7 @@ class Node:
         return self._depth
 
     def __hash__(self):
-        return hash((self._board.tobytes(), self.depth))
+        return hash((self._board.tobytes()))
 
     # Properties
     @property
