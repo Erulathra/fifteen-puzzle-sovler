@@ -10,8 +10,8 @@ from matplotlib import pyplot
 def main():
     pyplot.rcParams["figure.figsize"] = (8, 5)
 
-    # plot_general_data()
-    # plot_bfs_and_dfs_data()
+    plot_general_data()
+    plot_bfs_and_dfs_data()
     plot_astr_data()
 
 

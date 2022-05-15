@@ -14,23 +14,17 @@ def dfs_algorithm(start_node: Node,
         return start_node
 
     open_stack = [start_node]
-    closed_set = dict()
+    closed_set = set()
 
     search_statistics.increase_visited_states_count(1)
 
     while open_stack:
         current_node = open_stack.pop()
-        sol = list(current_node.path)
 
-        if hash(current_node) in closed_set:
-            if closed_set[hash(current_node)].depth >= current_node.depth:
-                closed_set[hash(current_node)] = current_node
-                continue
-
-        if current_node.depth > max_depth:
+        if current_node in closed_set or current_node.depth > max_depth:
             continue
 
-        closed_set[hash(current_node)] = current_node
+        closed_set.add(current_node)
         search_statistics.increase_processed_states_count(1)
 
         for neighbour in reversed(current_node.get_neighbours(order)):

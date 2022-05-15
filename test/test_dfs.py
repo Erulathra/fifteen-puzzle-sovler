@@ -31,7 +31,7 @@ class algorithm_test(TestCase):
         [9, 0, 10, 12],
         [13, 14, 11, 15]
     ])
-    test_nodes.append(Node.get_node(test_board_2))
+    # test_nodes.append(Node.get_node(test_board_2))
 
     test_board_3 = np.array([
         [1, 2, 0, 4],
@@ -48,6 +48,14 @@ class algorithm_test(TestCase):
         [13, 14, 15, 12]
     ])
     test_nodes.append(Node.get_node(test_board_4))
+
+    test_board_5 = np.array([
+        [1, 2, 3, 4],
+        [5, 7, 0, 8],
+        [9, 6, 15, 11],
+        [13, 10, 14, 12]
+    ])
+    test_nodes.append(Node.get_node(test_board_5))
 
     def test_dfs_algorithm(self):
         for test_node in self.test_nodes:
